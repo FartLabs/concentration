@@ -11,9 +11,4 @@
 
 {@debug data}
 
-<Concentration
-	values={data.sounds.map(({ sound }) => {
-		return sound;
-		// return sound.replace()
-	})}
-/>
+<Concentration sounds={data.sounds} />

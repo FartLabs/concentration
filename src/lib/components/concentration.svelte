@@ -1,10 +1,14 @@
 <script lang="ts">
+	import type { SoundData } from '$lib/sounds';
+	import { playSound } from '$lib/sounds';
+
 	type State = 'start' | 'playing' | 'paused' | 'won';
 
-	export let values: string[] = [];
+	// export let values: string[] = [];
+	export let sounds: SoundData[] = [];
 
 	let state: State = 'start';
-	let size = values.length;
+	let size = sounds.length;
 	let grid = createGrid();
 	let maxMatches = grid.length / 2;
 	let selected: number[] = [];
@@ -20,8 +24,8 @@
 
 		while (cards.size < maxSize) {
 			// pick random values
-			const randomIndex = Math.floor(Math.random() * values.length);
-			cards.add(values[randomIndex]);
+			const randomIndex = Math.floor(Math.random() * sounds.length);
+			cards.add(sounds[randomIndex].sound);
 		}
 
 		// duplicate and shuffle cards
@@ -46,7 +50,7 @@
 
 	function selectCard(cardIndex: number) {
 		selected = selected.concat(cardIndex);
-		console.log('Selected', values[cardIndex]);
+		playSound(sounds[cardIndex]);
 	}
 
 	function matchCards() {
@@ -143,9 +147,7 @@
 				disabled={isSelectedOrMatch}
 				on:click={() => selectCard(cardIndex)}
 			>
-				<div class="back" class:match>
-					{card}
-				</div>
+				<div class="back" class:match>💨</div>
 			</button>
 		{/each}
 	</div>

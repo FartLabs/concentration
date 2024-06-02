@@ -2,6 +2,10 @@ export interface SoundData {
 	sound: string;
 }
 
+export function playSound(data: SoundData) {
+	return play(makeSoundURL(data));
+}
+
 export function play(src: string): Promise<void> {
 	const audio = new Audio(src);
 	audio.play();
@@ -12,8 +16,12 @@ export function play(src: string): Promise<void> {
 	});
 }
 
-export const SOUNDS_URL = makeSoundURL('sounds.json');
+export const SOUNDS_URL = makeURL('sounds.json');
 
-export function makeSoundURL(path: string) {
+export function makeSoundURL(data: SoundData) {
+	return makeURL(`sounds/${data.sound}`);
+}
+
+export function makeURL(path: string) {
 	return `https://github.com/gddmadoss/movies/raw/main/${path}`;
 }
