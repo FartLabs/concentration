@@ -1,5 +1,5 @@
 <script lang="ts">
-	type State = 'start' | 'playing' | 'paused' | 'won' | 'lost';
+	type State = 'start' | 'playing' | 'paused' | 'won';
 
 	export let values: string[] = [];
 
@@ -38,7 +38,7 @@
 				return;
 			}
 
-			time -= 1;
+			time += 1;
 		}
 
 		timerId = setInterval(countdown, 1000);
@@ -46,6 +46,7 @@
 
 	function selectCard(cardIndex: number) {
 		selected = selected.concat(cardIndex);
+		console.log('Selected', values[cardIndex]);
 	}
 
 	function matchCards() {
@@ -86,16 +87,11 @@
 		selected = [];
 		matches = [];
 		timerId = null;
-		time = 60;
+		time = 0;
 	}
 
 	function gameWon() {
 		state = 'won';
-		resetGame();
-	}
-
-	function gameLost() {
-		state = 'lost';
 		resetGame();
 	}
 
@@ -109,10 +105,6 @@
 
 	$: if (maxMatches === matches.length) {
 		gameWon();
-	}
-
-	$: if (time === 0) {
-		gameLost();
 	}
 </script>
 
@@ -159,17 +151,68 @@
 	</div>
 {/if}
 
-{#if state === 'lost'}
-	<h1>You lost! 💩</h1>
-	<button on:click={() => (state = 'playing')}>Play again</button>
-{/if}
-
 {#if state === 'won'}
 	<h1>You win! 🎉</h1>
 	<button on:click={() => (state = 'playing')}>Play again</button>
 {/if}
 
 <style>
+	/* @import '@fontsource/poppins'; */
+	@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	:root {
+		--txt-1: hsl(220 10% 98%);
+		--bg-1: hsl(220 20% 10%);
+		--bg-2: hsl(220 20% 20%);
+		--border: hsl(180 100% 50%);
+		--pulse: hsl(9 100% 64%);
+	}
+
+	html,
+	body {
+		height: 100%;
+	}
+
+	body {
+		display: grid;
+		place-content: center;
+		padding: 2rem;
+		font-family: 'Poppins', sans-serif;
+		color: var(--txt-1);
+		background-color: var(--bg-1);
+	}
+
+	h1 {
+		font-size: 4rem;
+		text-align: center;
+		text-transform: capitalize;
+	}
+
+	h1 + button {
+		width: max-content;
+		margin-top: 2rem;
+		margin-inline: auto;
+		border: 4px solid var(--border);
+	}
+
+	button {
+		padding: 1.5rem;
+		font-size: 2rem;
+		font-weight: 900;
+		color: inherit;
+		background: none;
+		border-radius: 8px;
+		border: none;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
 	.cards {
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
