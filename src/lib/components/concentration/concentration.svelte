@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import type { SoundData } from '$lib/sounds';
 	import { playAudio } from '$lib/sounds';
+	import { onMount } from 'svelte';
 	import type { ConcentrationState } from './concentration';
 	import { createGrid, audiosFromGrid } from './concentration';
 
@@ -15,8 +16,11 @@
 	let timerID: number | null = null;
 	let time = 0;
 	let winTime = 0;
+	let audios: HTMLAudioElement[] = [];
 
-	$: audios = browser ? audiosFromGrid(grid) : [];
+	onMount(() => {
+		audios = audiosFromGrid(grid);
+	});
 
 	function startGameTimer() {
 		function countdown() {
@@ -67,6 +71,7 @@
 		}
 
 		grid = createGrid(sounds);
+		audios = audiosFromGrid(grid);
 		maxMatches = grid.length / 2;
 		selected = [];
 		matches = [];
