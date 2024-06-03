@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { play } from '$lib/sounds';
+	import { playAudio } from '$lib/sounds';
 
 	export let src: string;
 
@@ -10,7 +10,7 @@
 <button
 	on:click={() => {
 		playing = true;
-		play(src).finally(() => (playing = false));
+		playAudio(new Audio(src)).finally(() => (playing = false));
 	}}
 	disabled={playing}
 >

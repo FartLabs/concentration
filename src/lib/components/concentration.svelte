@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import type { SoundData } from '$lib/sounds';
-	import { playSound } from '$lib/sounds';
+	import { makeSoundURL, playAudio } from '$lib/sounds';
 
 	type State = 'start' | 'playing' | 'paused' | 'won';
 
-	// export let values: string[] = [];
 	export let sounds: SoundData[] = [];
 
 	let state: State = 'start';
@@ -15,6 +15,13 @@
 	let matches: string[] = [];
 	let timerId: number | null = null;
 	let time = 0;
+	let winTime = 0;
+
+	$: audios = browser ? audiosFromGrid(grid) : [];
+
+	function audiosFromGrid(grid: string[]) {
+		return grid.map((sound) => new Audio(makeSoundURL({ sound })));
+	}
 
 	function createGrid() {
 		// only want unique cards
@@ -50,7 +57,7 @@
 
 	function selectCard(cardIndex: number) {
 		selected = selected.concat(cardIndex);
-		playSound(sounds[cardIndex]);
+		playAudio(audios[cardIndex]);
 	}
 
 	function matchCards() {
@@ -96,6 +103,7 @@
 
 	function gameWon() {
 		state = 'won';
+		winTime = time;
 		resetGame();
 	}
 
@@ -114,59 +122,50 @@
 
 <svelte:window on:keydown={pauseGame} />
 
-{#if state === 'start'}
-	<h1>Matching game</h1>
-	<button on:click={() => (state = 'playing')}>Play</button>
-{/if}
+<main>
+	{#if state === 'start'}
+		<h1>Matching game</h1>
+		<button on:click={() => (state = 'playing')}>Play</button>
+	{/if}
 
-{#if state === 'paused'}
-	<h1>Game paused</h1>
-{/if}
+	{#if state === 'paused'}
+		<h1>Game paused</h1>
+	{/if}
 
-{#if state === 'playing'}
-	<h1 class="timer" class:pulse={time <= 10}>
-		{time}
-	</h1>
+	{#if state === 'playing'}
+		<h1 class="timer" class:pulse={time <= 10}>
+			{time}
+		</h1>
 
-	<div class="matches">
-		{#each matches as card}
-			<div>{card}</div>
-		{/each}
-	</div>
+		<div class="cards">
+			{#each grid as card, cardIndex}
+				{@const isSelected = selected.includes(cardIndex)}
+				{@const isSelectedOrMatch = selected.includes(cardIndex) || matches.includes(card)}
+				{@const match = matches.includes(card)}
 
-	<div class="cards">
-		{#each grid as card, cardIndex}
-			{@const isSelected = selected.includes(cardIndex)}
-			{@const isSelectedOrMatch = selected.includes(cardIndex) || matches.includes(card)}
-			{@const match = matches.includes(card)}
+				<button
+					class="card"
+					class:selected={isSelected}
+					class:flip={isSelectedOrMatch}
+					disabled={isSelectedOrMatch}
+					on:click={() => selectCard(cardIndex)}
+				>
+					<div class="back" class:match>💨</div>
+				</button>
+			{/each}
+		</div>
+	{/if}
 
-			<button
-				class="card"
-				class:selected={isSelected}
-				class:flip={isSelectedOrMatch}
-				disabled={isSelectedOrMatch}
-				on:click={() => selectCard(cardIndex)}
-			>
-				<div class="back" class:match>💨</div>
-			</button>
-		{/each}
-	</div>
-{/if}
-
-{#if state === 'won'}
-	<h1>You win! 🎉</h1>
-	<button on:click={() => (state = 'playing')}>Play again</button>
-{/if}
+	{#if state === 'won'}
+		<h1>You won in {winTime} seconds!</h1>
+		<button on:click={() => (state = 'playing')}>Play again</button>
+	{/if}
+</main>
 
 <style>
 	/* @import '@fontsource/poppins'; */
+	/* TODO: Customize colors and font family. */
 	@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
 
 	:root {
 		--txt-1: hsl(220 10% 98%);
@@ -176,12 +175,8 @@
 		--pulse: hsl(9 100% 64%);
 	}
 
-	html,
-	body {
+	main {
 		height: 100%;
-	}
-
-	body {
 		display: grid;
 		place-content: center;
 		padding: 2rem;
@@ -216,9 +211,10 @@
 	}
 
 	.cards {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 0.4rem;
+		display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+		gap: 0.5rem;
 	}
 
 	.card {
@@ -251,13 +247,6 @@
 			transition: opacity 0.3s ease-out;
 			opacity: 0.4;
 		}
-	}
-
-	.matches {
-		display: flex;
-		gap: 1rem;
-		margin-block: 2rem;
-		font-size: 3rem;
 	}
 
 	.timer {

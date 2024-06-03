@@ -3,11 +3,10 @@ export interface SoundData {
 }
 
 export function playSound(data: SoundData) {
-	return play(makeSoundURL(data));
+	return playAudio(new Audio(makeSoundURL(data)));
 }
 
-export function play(src: string): Promise<void> {
-	const audio = new Audio(src);
+export function playAudio(audio: HTMLAudioElement): Promise<void> {
 	audio.play();
 
 	return new Promise((resolve, reject) => {

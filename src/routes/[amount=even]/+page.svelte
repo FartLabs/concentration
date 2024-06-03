@@ -9,6 +9,4 @@
 
 <!-- Concentration game  -->
 
-{@debug data}
-
 <Concentration sounds={data.sounds} />
