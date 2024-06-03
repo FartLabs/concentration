@@ -1,3 +1,5 @@
+<h1>Fart Concentration</h1>
+
 <slot />
 
 <hr />

@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+	--green: #c3ef3c;
+	--dark-green: #004021;
+	--lighter-dark-green: #005b31;
+	--darker-dark-green: #002d17;
+
+	--secondary: #db7093;
+	--off-white: #ddd;
+	--dark-off-white: #aaa;
+}
+
+::selection {
+	background-color: #db709384;
+}
+
+body {
+	background-color: var(--dark-green);
+	color: var(--off-white);
+	font-family: sans-serif;
+	margin: 0;
+}

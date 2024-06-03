@@ -212,8 +212,8 @@
 
 	.cards {
 		display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
 
