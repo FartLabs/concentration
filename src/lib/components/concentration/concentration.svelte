@@ -184,7 +184,7 @@
 		height: 140px;
 		width: 140px;
 		font-size: 4rem;
-		background-color: var(--darker-dark-green);
+		background-color: var(--lighter-dark-green);
 		transition: rotate 0.3s ease-out;
 		transform-style: preserve-3d;
 
@@ -209,6 +209,7 @@
 		& .match {
 			transition: opacity 0.3s ease-out;
 			opacity: 0.4;
+			background-color: var(--darker-dark-green);
 		}
 	}
 
