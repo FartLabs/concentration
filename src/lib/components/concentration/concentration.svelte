@@ -97,8 +97,7 @@
 
 <section>
 	{#if state === 'start'}
-		<h1>Matching game</h1>
-		<button on:click={() => (state = 'playing')}>Play</button>
+		<button on:click={() => (state = 'playing')} class="page-link-visible-on-hover">Play</button>
 	{/if}
 
 	{#if state === 'paused'}
@@ -106,8 +105,12 @@
 	{/if}
 
 	{#if state === 'playing'}
-		<h2 class="timer">{time}</h2>
+		<p class="timer">Seconds: {time}</p>
+	{:else if state === 'won'}
+		<p class="timer">You won in {winTime} seconds!</p>
+	{/if}
 
+	{#if state === 'playing'}
 		<div class="cards">
 			{#each grid as card, cardIndex}
 				{@const isSelected = selected.includes(cardIndex)}
@@ -128,31 +131,22 @@
 	{/if}
 
 	{#if state === 'won'}
-		<h1>You won in {winTime} seconds!</h1>
-		<button on:click={() => (state = 'playing')}>Play again</button>
+		<button on:click={() => (state = 'playing')} class="page-link-visible-on-hover"
+			>Play again</button
+		>
 	{/if}
 </section>
 
 <style>
-	/* @import '@fontsource/poppins'; */
-	/* TODO: Customize colors and font family. */
-	@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
 	:root {
 		--txt-1: hsl(220 10% 98%);
-		--bg-1: hsl(220 20% 10%);
-		--bg-2: hsl(220 20% 20%);
-		--border: hsl(180 100% 50%);
 	}
 
 	section {
 		height: 100%;
 		display: grid;
 		place-content: center;
-		padding: 2rem;
-		font-family: 'Poppins', sans-serif;
-		color: var(--txt-1);
-		background-color: var(--bg-1);
+		padding-bottom: 2rem;
 	}
 
 	h1 {
@@ -161,23 +155,17 @@
 		text-transform: capitalize;
 	}
 
-	h1 + button {
-		width: max-content;
-		margin-top: 2rem;
-		margin-inline: auto;
-		border: 4px solid var(--border);
-	}
-
 	button {
 		padding: 1.5rem;
 		font-size: 2rem;
 		font-weight: 900;
-		color: inherit;
 		background: none;
 		border-radius: 8px;
 		border: none;
-		text-transform: uppercase;
 		cursor: pointer;
+		display: flex;
+		place-items: center;
+		justify-content: center;
 	}
 
 	.cards {
@@ -191,12 +179,12 @@
 		height: 140px;
 		width: 140px;
 		font-size: 4rem;
-		background-color: var(--bg-2);
+		background-color: var(--darker-dark-green);
 		transition: rotate 0.3s ease-out;
 		transform-style: preserve-3d;
 
 		&.selected {
-			border: 4px solid var(--border);
+			border: 4px solid var(--green);
 		}
 
 		&.flip {
@@ -221,5 +209,6 @@
 
 	.timer {
 		transition: color 0.3s ease;
+		text-align: center;
 	}
 </style>
