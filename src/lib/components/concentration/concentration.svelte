@@ -106,9 +106,7 @@
 	{/if}
 
 	{#if state === 'playing'}
-		<h1 class="timer" class:pulse={time <= 10}>
-			{time}
-		</h1>
+		<h2 class="timer">{time}</h2>
 
 		<div class="cards">
 			{#each grid as card, cardIndex}
@@ -145,7 +143,6 @@
 		--bg-1: hsl(220 20% 10%);
 		--bg-2: hsl(220 20% 20%);
 		--border: hsl(180 100% 50%);
-		--pulse: hsl(9 100% 64%);
 	}
 
 	main {
@@ -224,16 +221,5 @@
 
 	.timer {
 		transition: color 0.3s ease;
-	}
-
-	.pulse {
-		color: var(--pulse);
-		animation: pulse 1s infinite ease;
-	}
-
-	@keyframes pulse {
-		to {
-			scale: 1.4;
-		}
 	}
 </style>
