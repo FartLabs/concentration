@@ -6,13 +6,15 @@
 	export let data: PageData;
 </script>
 
-<p>Study each fart sound carefully.</p>
+<div class="page-section">
+	<p>Study each fart sound carefully.</p>
 
-<ul>
-	{#each data.sounds as { sound }}
-		<li>
-			<Sound src={makeSoundURL({ sound })} />
-			<a href={makeSoundURL({ sound })} download={sound}>[Download]</a>
-		</li>
-	{/each}
-</ul>
+	<ul>
+		{#each data.sounds as { sound }}
+			<li>
+				<Sound src={makeSoundURL({ sound })} />
+				<a href={makeSoundURL({ sound })} download={sound}>[Download]</a>
+			</li>
+		{/each}
+	</ul>
+</div>

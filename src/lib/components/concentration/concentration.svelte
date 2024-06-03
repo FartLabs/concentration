@@ -170,7 +170,7 @@
 
 	.cards {
 		display: flex;
-		justify-content: space-evenly;
+		justify-content: center;
 		flex-wrap: wrap;
 		gap: 0.5rem;
 	}

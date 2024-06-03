@@ -3,13 +3,15 @@
 	<link rel="icon" href="https://fart.tools/fl-logo.png" />
 </svelte:head>
 
-<main>
+<div class="page-section">
 	<h1>
 		<a href="/" class="page-link-visible-on-hover">Fart Concentration</a>
 	</h1>
+</div>
 
-	<slot />
+<slot />
 
+<div class="page-section">
 	<hr />
 
 	<footer>
@@ -22,14 +24,9 @@
 			>Chat<small>↗</small></a
 		>
 	</footer>
-</main>
+</div>
 
 <style>
-	main {
-		max-width: 64ch;
-		margin: 6rem auto;
-	}
-
 	footer {
 		text-align: center;
 	}

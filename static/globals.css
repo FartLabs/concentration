@@ -22,6 +22,11 @@ body {
 	margin: 0;
 }
 
+.page-section {
+	max-width: 64ch;
+	margin: 6rem auto;
+}
+
 a,
 .page-link,
 .page-link-visible-on-hover {
