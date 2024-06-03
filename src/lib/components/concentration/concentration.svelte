@@ -1,47 +1,22 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import type { SoundData } from '$lib/sounds';
-	import { makeSoundURL, playAudio } from '$lib/sounds';
-
-	type State = 'start' | 'playing' | 'paused' | 'won';
+	import { playAudio } from '$lib/sounds';
+	import type { ConcentrationState } from './concentration';
+	import { createGrid, audiosFromGrid } from './concentration';
 
 	export let sounds: SoundData[] = [];
 
-	let state: State = 'start';
-	let size = sounds.length;
-	let grid = createGrid();
+	let state: ConcentrationState = 'start';
+	let grid = createGrid(sounds);
 	let maxMatches = grid.length / 2;
 	let selected: number[] = [];
 	let matches: string[] = [];
-	let timerId: number | null = null;
+	let timerID: number | null = null;
 	let time = 0;
 	let winTime = 0;
 
 	$: audios = browser ? audiosFromGrid(grid) : [];
-
-	function audiosFromGrid(grid: string[]) {
-		return grid.map((sound) => new Audio(makeSoundURL({ sound })));
-	}
-
-	function createGrid() {
-		// only want unique cards
-		let cards = new Set<string>();
-		// half because we duplicate the cards
-		let maxSize = size / 2;
-
-		while (cards.size < maxSize) {
-			// pick random values
-			const randomIndex = Math.floor(Math.random() * sounds.length);
-			cards.add(sounds[randomIndex].sound);
-		}
-
-		// duplicate and shuffle cards
-		return shuffle([...cards, ...cards]);
-	}
-
-	function shuffle<T>(array: T[]) {
-		return array.sort(() => Math.random() - 0.5);
-	}
 
 	function startGameTimer() {
 		function countdown() {
@@ -52,7 +27,7 @@
 			time += 1;
 		}
 
-		timerId = setInterval(countdown, 1000);
+		timerID = setInterval(countdown, 1000);
 	}
 
 	function selectCard(cardIndex: number) {
@@ -61,14 +36,12 @@
 	}
 
 	function matchCards() {
-		// array destructuring can have any name for the values
 		const [first, second] = selected;
 
 		if (grid[first] === grid[second]) {
 			matches = matches.concat(grid[first]);
 		}
 
-		// clear selected
 		setTimeout(() => (selected = []), 300);
 	}
 
@@ -89,15 +62,15 @@
 	}
 
 	function resetGame() {
-		if (timerId) {
-			clearInterval(timerId);
+		if (timerID) {
+			clearInterval(timerID);
 		}
 
-		grid = createGrid();
+		grid = createGrid(sounds);
 		maxMatches = grid.length / 2;
 		selected = [];
 		matches = [];
-		timerId = null;
+		timerID = null;
 		time = 0;
 	}
 
@@ -107,7 +80,7 @@
 		resetGame();
 	}
 
-	$: if (state === 'playing' && !timerId) {
+	$: if (state === 'playing' && !timerID) {
 		startGameTimer();
 	}
 
