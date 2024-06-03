@@ -95,7 +95,7 @@
 
 <svelte:window on:keydown={pauseGame} />
 
-<main>
+<section>
 	{#if state === 'start'}
 		<h1>Matching game</h1>
 		<button on:click={() => (state = 'playing')}>Play</button>
@@ -131,7 +131,7 @@
 		<h1>You won in {winTime} seconds!</h1>
 		<button on:click={() => (state = 'playing')}>Play again</button>
 	{/if}
-</main>
+</section>
 
 <style>
 	/* @import '@fontsource/poppins'; */
@@ -145,7 +145,7 @@
 		--border: hsl(180 100% 50%);
 	}
 
-	main {
+	section {
 		height: 100%;
 		display: grid;
 		place-content: center;
