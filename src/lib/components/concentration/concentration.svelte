@@ -171,6 +171,7 @@
 		display: flex;
 		place-items: center;
 		justify-content: center;
+		font-family: "Overpass", sans-serif;
 	}
 
 	.cards {
