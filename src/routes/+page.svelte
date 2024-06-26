@@ -1,4 +1,4 @@
-<div class="page-section">
+<div class="fart-section">
 	<h2>Instructions</h2>
 
 	<p>
