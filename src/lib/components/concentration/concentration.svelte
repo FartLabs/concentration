@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import type { SoundData } from '$lib/sounds';
 	import { playAudio } from '$lib/sounds';
 	import { onMount } from 'svelte';
@@ -102,7 +101,7 @@
 
 <section>
 	{#if state === 'start'}
-		<button on:click={() => (state = 'playing')} class="page-link-visible-on-hover">Play</button>
+		<button on:click={() => (state = 'playing')} class="fart-link-visible-on-hover">Play</button>
 	{/if}
 
 	{#if state === 'paused'}
@@ -136,7 +135,7 @@
 	{/if}
 
 	{#if state === 'won'}
-		<button on:click={() => (state = 'playing')} class="page-link-visible-on-hover"
+		<button on:click={() => (state = 'playing')} class="fart-link-visible-on-hover"
 			>Play again</button
 		>
 	{/if}
@@ -171,7 +170,7 @@
 		display: flex;
 		place-items: center;
 		justify-content: center;
-		font-family: "Overpass", sans-serif;
+		font-family: 'Overpass', sans-serif;
 	}
 
 	.cards {
@@ -185,12 +184,12 @@
 		height: 140px;
 		width: 140px;
 		font-size: 4rem;
-		background-color: var(--lighter-dark-green);
+		background-color: var(--fart-lighter-dark-green);
 		transition: rotate 0.3s ease-out;
 		transform-style: preserve-3d;
 
 		&.selected {
-			border: 4px solid var(--green);
+			border: 4px solid var(--fart-green);
 		}
 
 		&.flip {
@@ -210,7 +209,7 @@
 		& .match {
 			transition: opacity 0.3s ease-out;
 			opacity: 0.4;
-			background-color: var(--darker-dark-green);
+			background-color: var(--fart-darker-dark-green);
 		}
 	}
 

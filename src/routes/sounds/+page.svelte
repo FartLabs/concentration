@@ -6,7 +6,7 @@
 	export let data: PageData;
 </script>
 
-<div class="page-section">
+<div class="fart-section">
 	<p>Study each fart sound carefully.</p>
 
 	<ul>
