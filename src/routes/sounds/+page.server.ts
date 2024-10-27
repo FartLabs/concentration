@@ -7,3 +7,5 @@ export async function load({ fetch }: PageServerLoadEvent) {
 		sounds: (await fetch(SOUNDS_URL).then((r) => r.json())) as SoundData[]
 	};
 }
+
+export const prerender = true;
