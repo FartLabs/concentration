@@ -9,12 +9,12 @@
 <div class="fart-section">
 	<p>Study each fart sound carefully.</p>
 
-	<ul>
+	<ol>
 		{#each data.sounds as { sound }}
 			<li>
 				<Sound src={makeSoundURL({ sound })} />
 				<a href={makeSoundURL({ sound })} download={sound}>[Download]</a>
 			</li>
 		{/each}
-	</ul>
+	</ol>
 </div>
