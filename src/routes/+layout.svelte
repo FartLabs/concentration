@@ -1,6 +1,18 @@
 <svelte:head>
 	<title>Fart Concentration</title>
 	<link rel="icon" href="https://fart.tools/fl-logo.png" />
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-MRV0QJGJJ9"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+
+		gtag('config', 'G-MRV0QJGJJ9');
+	</script>
 </svelte:head>
 
 <div class="fart-section">
