@@ -98,19 +98,40 @@
 	// Determine number of columns based on total cards for a balanced grid
 	// 6 cards -> 3x2
 	// 8 cards -> 4x2
-	// 10 cards -> 5x2
+	// 10 cards -> 4+4+2
 	// 12 cards -> 4x3
 	// 16 cards -> 4x4
 	// 20 cards -> 5x4
-	$: cols =
-		{
-			6: 3,
-			8: 4,
-			10: 5,
-			12: 4,
-			16: 4,
-			20: 5
-		}[grid.length] ?? 4;
+	const GRID_LAYOUTS: Record<number, number[]> = {
+		6: [3, 3],
+		8: [4, 4],
+		10: [4, 4, 2],
+		12: [4, 4, 4],
+		16: [4, 4, 4, 4],
+		20: [5, 5, 5, 5]
+	};
+
+	let rows: { card: string; index: number }[][] = [];
+
+	$: {
+		const layout = GRID_LAYOUTS[grid.length] ?? [];
+		const gridWithIndices = grid.map((card, index) => ({ card, index }));
+
+		if (layout.length > 0) {
+			let currentIndex = 0;
+			rows = layout.map((count) => {
+				const row = gridWithIndices.slice(currentIndex, currentIndex + count);
+				currentIndex += count;
+				return row;
+			});
+		} else {
+			// Fallback to chunks of 4 if no layout is defined
+			rows = [];
+			for (let i = 0; i < gridWithIndices.length; i += 4) {
+				rows.push(gridWithIndices.slice(i, i + 4));
+			}
+		}
+	}
 </script>
 
 <svelte:window on:keydown={pauseGame} />
@@ -131,21 +152,25 @@
 	{/if}
 
 	{#if state === 'playing'}
-		<div class="cards" style:--cols={cols}>
-			{#each grid as card, cardIndex}
-				{@const isSelected = selected.includes(cardIndex)}
-				{@const isSelectedOrMatch = selected.includes(cardIndex) || matches.includes(card)}
-				{@const match = matches.includes(card)}
+		<div class="board">
+			{#each rows as row}
+				<div class="row">
+					{#each row as { card, index } (index)}
+						{@const isSelected = selected.includes(index)}
+						{@const isSelectedOrMatch = selected.includes(index) || matches.includes(card)}
+						{@const match = matches.includes(card)}
 
-				<button
-					class="card"
-					class:selected={isSelected}
-					class:flip={isSelectedOrMatch}
-					disabled={isSelectedOrMatch}
-					on:click={() => selectCard(cardIndex)}
-				>
-					<div class="back" class:match>💨</div>
-				</button>
+						<button
+							class="card"
+							class:selected={isSelected}
+							class:flip={isSelectedOrMatch}
+							disabled={isSelectedOrMatch}
+							on:click={() => selectCard(index)}
+						>
+							<div class="back" class:match>💨</div>
+						</button>
+					{/each}
+				</div>
 			{/each}
 		</div>
 	{/if}
@@ -189,9 +214,15 @@
 		font-family: 'Overpass', sans-serif;
 	}
 
-	.cards {
-		display: grid;
-		grid-template-columns: repeat(var(--cols), 1fr);
+	.board {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.row {
+		display: flex;
 		justify-content: center;
 		gap: 0.5rem;
 	}
