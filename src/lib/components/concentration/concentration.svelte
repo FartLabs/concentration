@@ -95,6 +95,22 @@
 	$: if (maxMatches === matches.length) {
 		gameWon();
 	}
+	// Determine number of columns based on total cards for a balanced grid
+	// 6 cards -> 3x2
+	// 8 cards -> 4x2
+	// 10 cards -> 5x2
+	// 12 cards -> 4x3
+	// 16 cards -> 4x4
+	// 20 cards -> 5x4
+	$: cols =
+		{
+			6: 3,
+			8: 4,
+			10: 5,
+			12: 4,
+			16: 4,
+			20: 5
+		}[grid.length] ?? 4;
 </script>
 
 <svelte:window on:keydown={pauseGame} />
@@ -115,7 +131,7 @@
 	{/if}
 
 	{#if state === 'playing'}
-		<div class="cards">
+		<div class="cards" style:--cols={cols}>
 			{#each grid as card, cardIndex}
 				{@const isSelected = selected.includes(cardIndex)}
 				{@const isSelectedOrMatch = selected.includes(cardIndex) || matches.includes(card)}
@@ -174,9 +190,9 @@
 	}
 
 	.cards {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(var(--cols), 1fr);
 		justify-content: center;
-		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
 
