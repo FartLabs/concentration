@@ -39,11 +39,17 @@
 </div>
 
 <style>
+	:root {
+		--spacing-md: 1rem;
+	}
+
 	h1 {
-		font-size: 2rem;
+		font-size: clamp(1.25rem, 5vw, 2rem);
+		padding: 0 var(--spacing-md);
 	}
 
 	footer {
 		text-align: center;
+		padding: 0 var(--spacing-md);
 	}
 </style>

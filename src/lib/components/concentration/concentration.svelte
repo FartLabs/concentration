@@ -183,29 +183,83 @@
 </section>
 
 <style>
+	/* Design Tokens */
 	:root {
-		--txt-1: hsl(220 10% 98%);
+		/* Spacing Scale */
+		--spacing-xs: 0.5rem;
+		--spacing-sm: 0.75rem;
+		--spacing-md: 1rem;
+		--spacing-md-lg: 1.25rem;
+		--spacing-lg: 1.5rem;
+		--spacing-xl: 2rem;
+
+		/* Typography Scale - Mobile (base) */
+		--font-size-timer-mobile: clamp(1rem, 4vw, 1.5rem);
+		--font-size-heading-mobile: 2rem;
+		--font-size-button-mobile: 1.25rem;
+		--font-size-card-mobile: clamp(2rem, 8vw, 4rem);
+
+		/* Typography Scale - Tablet (480px+) */
+		--font-size-heading-tablet: 3rem;
+		--font-size-button-tablet: 1.5rem;
+
+		/* Typography Scale - Desktop (768px+) */
+		--font-size-heading-desktop: 4rem;
+		--font-size-button-desktop: 2rem;
+		--font-size-card-desktop: 4rem;
+		--font-size-timer-desktop: 1.5rem;
+
+		/* Card Dimensions */
+		--card-size-min: 80px;
+		--card-size-max: 140px;
+		--card-size-responsive: clamp(var(--card-size-min), 20vw, var(--card-size-max));
+
+		/* Border */
+		--border-radius: 8px;
+		--border-width-min: 2px;
+		--border-width-max: 4px;
+		--border-width-responsive: clamp(var(--border-width-min), 1vw, var(--border-width-max));
+
+		/* Transitions */
+		--transition-fast: 0.3s ease-out;
+		--transition-base: 0.3s ease;
+
+		/* Opacity */
+		--opacity-disabled: 0.4;
 	}
 
+	/* Base Styles */
 	section {
 		height: 100%;
 		display: grid;
 		place-content: center;
-		padding-bottom: 2rem;
+		padding: var(--spacing-md);
+		padding-bottom: var(--spacing-xl);
+		box-sizing: border-box;
 	}
 
-	h1 {
-		font-size: 4rem;
+	/* Component: Timer */
+	.timer {
+		transition: color var(--transition-base);
+		text-align: center;
+		font-size: var(--font-size-timer-mobile);
+		margin-bottom: var(--spacing-md);
+	}
+
+	/* Component: Heading */
+	section h1 {
+		font-size: var(--font-size-heading-mobile);
 		text-align: center;
 		text-transform: capitalize;
 	}
 
-	button {
-		padding: 1.5rem;
-		font-size: 2rem;
+	/* Component: Button (base) */
+	section button {
+		padding: var(--spacing-md);
+		font-size: var(--font-size-button-mobile);
 		font-weight: 900;
 		background: none;
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 		border: none;
 		cursor: pointer;
 		display: flex;
@@ -214,54 +268,110 @@
 		font-family: 'Overpass', sans-serif;
 	}
 
+	/* Component: Board */
 	.board {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--spacing-xs);
+		width: 100%;
+		max-width: 100%;
 	}
 
+	/* Component: Row */
 	.row {
 		display: flex;
 		justify-content: center;
-		gap: 0.5rem;
+		gap: var(--spacing-xs);
+		flex-wrap: wrap;
+		width: 100%;
 	}
 
+	/* Component: Card */
 	.card {
-		height: 140px;
-		width: 140px;
-		font-size: 4rem;
+		height: var(--card-size-responsive);
+		width: var(--card-size-responsive);
+		min-height: var(--card-size-min);
+		min-width: var(--card-size-min);
+		font-size: var(--font-size-card-mobile);
 		background-color: var(--fart-lighter-dark-green);
-		transition: rotate 0.3s ease-out;
+		transition: rotate var(--transition-fast);
 		transform-style: preserve-3d;
+		position: relative;
+		flex-shrink: 0;
+	}
 
-		&.selected {
-			border: 4px solid var(--fart-green);
+	.card.selected {
+		border: var(--border-width-responsive) solid var(--fart-green);
+	}
+
+	.card.flip {
+		rotate: y 180deg;
+		pointer-events: none;
+	}
+
+	.card .back {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-content: center;
+		backface-visibility: hidden;
+		rotate: y 180deg;
+	}
+
+	.card .back.match {
+		transition: opacity var(--transition-fast);
+		opacity: var(--opacity-disabled);
+		background-color: var(--fart-darker-dark-green);
+	}
+
+	/* Responsive: Tablet and up (480px+) */
+	@media (min-width: 480px) {
+		section h1 {
+			font-size: var(--font-size-heading-tablet);
 		}
 
-		&.flip {
-			rotate: y 180deg;
-			pointer-events: none;
+		section button {
+			padding: var(--spacing-md-lg);
+			font-size: var(--font-size-button-tablet);
 		}
 
-		& .back {
-			position: absolute;
-			inset: 0;
-			display: grid;
-			place-content: center;
-			backface-visibility: hidden;
-			rotate: y 180deg;
+		.board {
+			gap: var(--spacing-sm);
 		}
 
-		& .match {
-			transition: opacity 0.3s ease-out;
-			opacity: 0.4;
-			background-color: var(--fart-darker-dark-green);
+		.row {
+			gap: var(--spacing-sm);
 		}
 	}
 
-	.timer {
-		transition: color 0.3s ease;
-		text-align: center;
+	/* Responsive: Desktop (768px+) */
+	@media (min-width: 768px) {
+		section {
+			padding: var(--spacing-xl);
+		}
+
+		section h1 {
+			font-size: var(--font-size-heading-desktop);
+		}
+
+		section button {
+			padding: var(--spacing-lg);
+			font-size: var(--font-size-button-desktop);
+		}
+
+		.card {
+			height: var(--card-size-max);
+			width: var(--card-size-max);
+			font-size: var(--font-size-card-desktop);
+		}
+
+		.card.selected {
+			border: var(--border-width-max) solid var(--fart-green);
+		}
+
+		.timer {
+			font-size: var(--font-size-timer-desktop);
+		}
 	}
 </style>
