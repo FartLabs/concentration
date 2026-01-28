@@ -1,5 +1,7 @@
 # Fart Concentration
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FartLabs/concentration)
+
 Test your memory using fart sounds!
 
 ## Play the game
